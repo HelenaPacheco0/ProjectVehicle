@@ -1,0 +1,77 @@
+﻿@model PaginatedList<ProjectVehicle.Models.VehicleMake>
+
+@{
+    ViewData["Title"] = "Kazalo";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Dodaj vozilo</a>
+</p>
+
+<form asp-controler="VehicleMakes" asp-action="Index">
+    <p>
+        Pretraži: <input type="text" name="SearchString"/>
+        <input type="submit" value="Filtriraj"/>
+        <a asp-action="Index">Nazad</a>
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Abrv</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Model</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Country</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Abrv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index" asp-route-sortOrder = "@ViewData["CurrentSort"]"
+asp-route-pageNumber = "@(Model.PageIndex-1)"
+asp-route-currentFilter = "@ViewData["CurrentFilter"]"
+class="btn btn-default @prevDisabled">Previous</a>
+
+<a asp-action="Index" asp-route-sortOrder = "@ViewData["CurrentSort"]"
+asp-route-pageNumber = "@(Model.PageIndex+1)"
+asp-route-currentFilter = "@ViewData["CurrentFilter"]"
+class="btn btn-default @nextDisabled">Next</a>
